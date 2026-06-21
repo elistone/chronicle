@@ -14,6 +14,25 @@ struct ContentView: View {
     @State private var appIcon: NSImage? = nil
 
     var body: some View {
+        HStack(alignment: .top, spacing: 24) {
+            activeAppPanel
+            Divider()
+            IdleDetectorView()
+        }
+        .padding(32)
+        .frame(minWidth: 560, minHeight: 220)
+        .onAppear(perform: refresh)
+        .onReceive(
+            NotificationCenter.Publisher(
+                center: NSWorkspace.shared.notificationCenter,
+                name: NSWorkspace.didActivateApplicationNotification
+            )
+        ) { _ in
+            refresh()
+        }
+    }
+
+    private var activeAppPanel: some View {
         VStack(spacing: 16) {
             Group {
                 if let icon = appIcon {
@@ -36,17 +55,7 @@ struct ContentView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
-        .padding(32)
-        .frame(minWidth: 320, minHeight: 220)
-        .onAppear(perform: refresh)
-        .onReceive(
-            NotificationCenter.Publisher(
-                center: NSWorkspace.shared.notificationCenter,
-                name: NSWorkspace.didActivateApplicationNotification
-            )
-        ) { _ in
-            refresh()
-        }
+        .frame(minWidth: 200)
     }
 
     private func refresh() {
