@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct ChronicleApp: App {
+    private let activityLog = ActivityLog()
+
+    init() {
+        activityLog.start()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(activityLog)
         }
     }
 }

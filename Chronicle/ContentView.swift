@@ -6,70 +6,81 @@
 //
 
 import SwiftUI
-import AppKit
 
 struct ContentView: View {
-    @State private var appName = "—"
-    @State private var bundleID = "—"
-    @State private var appIcon: NSImage? = nil
+    @EnvironmentObject var activityLog: ActivityLog
 
     var body: some View {
-        VStack(spacing: 24) {
-            HStack(alignment: .top, spacing: 24) {
-                activeAppPanel
-                Divider()
-                IdleDetectorView()
+        Group {
+            if activityLog.events.isEmpty {
+                ContentUnavailableView(
+                    "No Activity",
+                    systemImage: "clock",
+                    description: Text("Events will appear here as you work.")
+                )
+            } else {
+                List(activityLog.events.reversed()) { event in
+                    ActivityEventRow(event: event)
+                }
             }
-            Divider()
-            WindowTitleDetectorView()
         }
-        .padding(32)
         .frame(minWidth: 560, minHeight: 400)
-        .onAppear(perform: refresh)
-        .onReceive(
-            NotificationCenter.Publisher(
-                center: NSWorkspace.shared.notificationCenter,
-                name: NSWorkspace.didActivateApplicationNotification
-            )
-        ) { _ in
-            refresh()
-        }
     }
+}
 
-    private var activeAppPanel: some View {
-        VStack(spacing: 16) {
-            Group {
-                if let icon = appIcon {
-                    Image(nsImage: icon)
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                } else {
-                    Image(systemName: "app.dashed")
-                        .resizable()
-                        .frame(width: 64, height: 64)
+private struct ActivityEventRow: View {
+    let event: ActivityEvent
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Text(event.timestamp, format: .dateTime.hour().minute().second())
+                .font(.caption)
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+                .frame(width: 72, alignment: .leading)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.body)
+                if let detail {
+                    Text(detail)
+                        .font(.caption)
                         .foregroundStyle(.secondary)
                 }
             }
-
-            Text(appName)
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text(bundleID)
-                .font(.caption)
-                .foregroundStyle(.secondary)
         }
-        .frame(minWidth: 200)
+        .padding(.vertical, 2)
     }
 
-    private func refresh() {
-        let app = NSWorkspace.shared.frontmostApplication
-        appName = app?.localizedName ?? "Unknown"
-        bundleID = app?.bundleIdentifier ?? ""
-        appIcon = app?.icon
+    private var title: String {
+        switch event.kind {
+        case .appActivated(let appName, _, _):
+            return appName
+        case .windowTitleChanged(let windowTitle):
+            return windowTitle
+        case .idleStarted:
+            return "Idle started"
+        case .idleEnded:
+            return "Idle ended"
+        }
+    }
+
+    private var detail: String? {
+        switch event.kind {
+        case .appActivated(_, let bundleID, let windowTitle):
+            if let windowTitle {
+                return "\(bundleID) · \(windowTitle)"
+            }
+            return bundleID
+        case .windowTitleChanged:
+            return "Window title changed"
+        case .idleStarted, .idleEnded:
+            return nil
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(ActivityLog())
 }

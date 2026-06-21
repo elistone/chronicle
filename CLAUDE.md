@@ -143,3 +143,9 @@ Chronicle is currently in an exploration and validation phase.
 
 Optimise for clarity and learning rather than future flexibility.
 
+
+For significant design discussions, architecture proposals, data models, persistence models, or major feature decisions:
+
+- Write proposals to Docs/proposals/.
+- Do not rely on terminal output as the sole record.
+- Wait for approval before implementation.
