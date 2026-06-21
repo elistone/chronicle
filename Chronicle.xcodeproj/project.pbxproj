@@ -45,6 +45,11 @@
 			path = ChronicleUITests;
 			sourceTree = "<group>";
 		};
+		0257FCBD2FE80EE6003AAE64 /* Docs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Docs;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 		0257FC8A2FE80C0B003AAE64 = {
 			isa = PBXGroup;
 			children = (
+				0257FCBD2FE80EE6003AAE64 /* Docs */,
 				0257FC952FE80C0B003AAE64 /* Chronicle */,
 				0257FCA32FE80C0D003AAE64 /* ChronicleTests */,
 				0257FCAD2FE80C0D003AAE64 /* ChronicleUITests */,
@@ -109,6 +115,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0257FC952FE80C0B003AAE64 /* Chronicle */,
+				0257FCBD2FE80EE6003AAE64 /* Docs */,
 			);
 			name = Chronicle;
 			packageProductDependencies = (

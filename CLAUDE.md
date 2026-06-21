@@ -1,12 +1,22 @@
 # CLAUDE.md
 
+## Before Making Changes
+
+Always read:
+
+1. README.md
+2. CLAUDE.md
+3. Relevant ADRs in Docs/ADR
+
+Architectural decisions documented in ADRs take precedence over assumptions.
+
+If a proposed change conflicts with an ADR, raise the concern before implementing.
+
 ## Project Overview
 
 Chronicle is a privacy-first, local-first macOS application for developers.
 
 Chronicle automatically records work activity, builds a searchable timeline of the workday, and helps generate accurate work logs and timesheets.
-
-Chronicle is designed primarily for software developers and technical professionals.
 
 ## Core Principles
 
@@ -14,13 +24,13 @@ Chronicle is designed primarily for software developers and technical profession
 
 Chronicle stores data locally on the user's machine by default.
 
-The application must function without any cloud services.
+The application must function without cloud services.
 
 ### Privacy First
 
 User activity data is private.
 
-Activity data must never be transmitted externally unless the user explicitly configures an integration or AI provider.
+Activity data must never be transmitted externally unless explicitly configured by the user.
 
 ### AI Optional
 
@@ -28,13 +38,11 @@ AI is an enhancement, not a requirement.
 
 All core functionality must work without AI.
 
-AI should summarise and enrich existing data, not generate or replace it.
+AI should enrich existing data rather than create or replace it.
 
 ### Developer Focused
 
-Chronicle is built primarily for software developers.
-
-Features that support development workflows are preferred over generic productivity features.
+Chronicle is built primarily for software developers and technical professionals.
 
 ## Non-Goals
 
@@ -56,13 +64,15 @@ When in doubt, favour privacy and simplicity.
 * Swift
 * SwiftUI
 
-### Persistence
-
-* SQLite
-
 ### Testing
 
 * Swift Testing
+
+### Persistence
+
+Persistence technology is defined by ADRs.
+
+Current persistence decisions should not be changed without reviewing existing ADRs.
 
 ### AI (Future)
 
@@ -104,7 +114,7 @@ Shared code belongs in:
 * Services/
 * Database/
 
-Avoid creating large utility folders.
+Avoid large generic utility folders.
 
 ## Dependencies
 
@@ -117,14 +127,6 @@ Before introducing a new dependency:
 * Minimise dependency count.
 
 Avoid dependencies that introduce cloud requirements.
-
-## Data Storage
-
-SQLite is the source of truth.
-
-Do not introduce server-side storage.
-
-Do not introduce cloud synchronisation without explicit discussion and approval.
 
 ## User Experience
 
@@ -155,7 +157,7 @@ A task is complete only when:
 * Tests pass
 * No new warnings are introduced
 * Existing architecture is respected
-* Documentation is updated if required
+* Relevant documentation is updated if required
 
 ## Current Focus
 
@@ -165,25 +167,21 @@ Prioritise:
 
 1. Active application detection
 2. Idle detection
-3. Local storage
+3. Local activity persistence
 4. Timeline visualisation
 
 Do not prematurely optimise or implement future roadmap features.
 
 ## Instructions for AI Contributors
 
-Before making significant changes:
+Before implementing a feature:
 
-1. Read README.md
-2. Read CLAUDE.md
-3. Understand the current roadmap and project goals
+* Understand the current roadmap stage.
+* Read relevant ADRs.
+* Prefer simple solutions.
+* Prefer local-first solutions.
+* Prefer privacy-preserving solutions.
+* Explain trade-offs when introducing complexity.
 
-When proposing solutions:
-
-* Prefer simple approaches
-* Prefer local-first approaches
-* Prefer privacy-preserving approaches
-* Explain trade-offs when introducing complexity
-
-If a proposed change conflicts with these principles, raise the concern before implementing it.
+When uncertain, choose the simplest solution that satisfies the requirement.
 

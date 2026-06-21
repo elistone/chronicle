@@ -2,7 +2,7 @@
 
 Chronicle is a privacy-first macOS application that automatically records work activity, helping developers understand where their time went and generate accurate work logs.
 
-Unlike traditional time trackers, Chronicle focuses on building a searchable timeline of your workday. It records activity locally, helps correlate work with projects and tickets, and can optionally generate summaries and timesheets.
+Unlike traditional time trackers, Chronicle focuses on building a searchable timeline of the workday. It records activity locally, helps correlate work with projects and tickets, and can optionally generate summaries and timesheets.
 
 ## Goals
 
@@ -84,7 +84,7 @@ The application must remain fully functional without AI services.
 
 * Active application tracking
 * Idle detection
-* Local storage
+* Persist activity data locally
 * Timeline view
 
 ### v0.2
@@ -108,7 +108,11 @@ Chronicle is currently in early development.
 
 The initial focus is validating activity tracking on macOS and establishing a solid local-first architecture before adding integrations and AI features.
 
+## Architecture Decisions
+
+Significant architectural decisions are documented in the `Docs/ADR` directory.
+
 ## License
 
-TBD
+MIT
 
