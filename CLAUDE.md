@@ -1,187 +1,145 @@
-# CLAUDE.md
+# Git Workflow
 
-## Before Making Changes
+Claude must never perform Git operations unless explicitly instructed by the user.
 
-Always read:
+This includes:
 
-1. README.md
-2. CLAUDE.md
-3. Relevant ADRs in Docs/ADR
+* Creating branches
+* Switching branches
+* Committing
+* Amending commits
+* Rebasing
+* Merging
+* Tagging
+* Pushing to remotes
 
-Architectural decisions documented in ADRs take precedence over assumptions.
+Instead:
 
-If a proposed change conflicts with an ADR, raise the concern before implementing.
+1. Make the requested code changes.
+2. Summarise what changed.
+3. Explain why the change was made.
+4. Suggest a commit message if appropriate.
+5. Wait for user approval before any Git operation.
 
-## Project Overview
+The user remains responsible for all Git decisions.
 
-Chronicle is a privacy-first, local-first macOS application for developers.
+Prefer small logical units of work.
 
-Chronicle automatically records work activity, builds a searchable timeline of the workday, and helps generate accurate work logs and timesheets.
+A commit should generally represent:
 
-## Core Principles
+* One feature
+* One bug fix
+* One investigation spike
+* One refactor
 
-### Local First
+Avoid large multi-purpose commits.
 
-Chronicle stores data locally on the user's machine by default.
+---
 
-The application must function without cloud services.
+# Branching
 
-### Privacy First
+Do not create, switch, merge, or delete branches unless explicitly instructed by the user.
 
-User activity data is private.
+When work would benefit from a dedicated branch:
 
-Activity data must never be transmitted externally unless explicitly configured by the user.
+* Suggest a branch name.
+* Explain why a branch may be useful.
+* Allow the user to decide.
 
-### AI Optional
+Examples:
 
-AI is an enhancement, not a requirement.
+Investigation spikes:
 
-All core functionality must work without AI.
+* spike/active-application-detection
+* spike/idle-detection
+* spike/window-title-detection
 
-AI should enrich existing data rather than create or replace it.
+Features:
 
-### Developer Focused
+* feature/activity-tracking
+* feature/timeline-view
+* feature/jira-integration
 
-Chronicle is built primarily for software developers and technical professionals.
+Branch creation is always a user decision.
 
-## Non-Goals
+---
 
-Chronicle is not:
+# ADR Creation
 
-* Employee surveillance software
-* Screenshot monitoring software
-* Keystroke logging software
-* Mouse activity tracking software
-* Productivity scoring software
-* A cloud-first SaaS platform
+Create ADRs only when:
 
-When in doubt, favour privacy and simplicity.
+* A significant architectural or technical decision has been made.
+* The decision has been validated through implementation or investigation.
+* The decision is expected to influence future development.
 
-## Technology Stack
+Do not create ADRs for:
 
-### Application
+* Speculative future designs
+* Unvalidated assumptions
+* Potential future architecture
+* Features that have not yet been investigated
 
-* Swift
-* SwiftUI
+Before creating a new ADR:
 
-### Testing
+1. Explain why an ADR may be appropriate.
+2. Summarise the decision being documented.
+3. Wait for user approval.
 
-* Swift Testing
+ADRs should document decisions that have already been made, not decisions that might be made later.
 
-### Persistence
+ADRs should generally contain:
 
-Persistence technology is defined by ADRs.
+* Context
+* Decision
+* Consequences
 
-Current persistence decisions should not be changed without reviewing existing ADRs.
+Keep ADRs concise and focused.
 
-### AI (Future)
+---
 
-* Ollama
-* OpenAI (optional)
-* Anthropic (optional)
+# Investigation Spikes
 
-## Development Workflow
+Investigation spikes are used to validate assumptions and learn about platform capabilities.
 
-Follow Test Driven Development whenever practical.
+The goal of a spike is discovery, not production architecture.
 
-For new functionality:
+For spikes:
 
-1. Create or update tests.
-2. Verify tests fail.
-3. Implement the minimum code required.
-4. Verify tests pass.
-5. Refactor if necessary.
+* Prefer simple implementations.
+* Avoid introducing abstractions.
+* Avoid introducing dependencies.
+* Avoid introducing persistence unless required.
+* Focus on learning and documenting findings.
 
-Avoid implementing large features without tests.
+A successful spike should produce:
 
-## Architecture
+* A validated assumption
+* Limitations discovered
+* Permission requirements identified
+* Recommended next steps
 
-Prefer feature-based organisation.
+Document discoveries before moving to implementation work.
 
-Example:
+# Architecture Philosophy
 
-Features/
+Prefer concrete implementations over abstractions.
 
-* ActivityTracking/
-* Timeline/
-* Dashboard/
-* Jira/
-* AI/
+Do not introduce:
 
-Shared code belongs in:
+* Factories
+* Coordinators
+* Dependency injection containers
+* Plugin systems
+* Generic frameworks
+* Service locators
 
-* Models/
-* Services/
-* Database/
+unless there is a demonstrated need.
 
-Avoid large generic utility folders.
+Start simple.
 
-## Dependencies
+Introduce abstractions only when multiple real use cases require them.
 
-Prefer Apple frameworks and standard libraries first.
+Chronicle is currently in an exploration and validation phase.
 
-Before introducing a new dependency:
-
-* Confirm it solves a meaningful problem.
-* Consider maintenance implications.
-* Minimise dependency count.
-
-Avoid dependencies that introduce cloud requirements.
-
-## User Experience
-
-Chronicle should feel lightweight and unobtrusive.
-
-Prioritise:
-
-* Simplicity
-* Performance
-* Low resource usage
-* Clear visualisations
-
-Avoid unnecessary complexity.
-
-## Security
-
-Use least-privilege access wherever possible.
-
-Only request macOS permissions when required.
-
-Explain permission requirements clearly to users.
-
-## Definition of Done
-
-A task is complete only when:
-
-* Code builds successfully
-* Tests pass
-* No new warnings are introduced
-* Existing architecture is respected
-* Relevant documentation is updated if required
-
-## Current Focus
-
-The current goal is validating local activity tracking on macOS.
-
-Prioritise:
-
-1. Active application detection
-2. Idle detection
-3. Local activity persistence
-4. Timeline visualisation
-
-Do not prematurely optimise or implement future roadmap features.
-
-## Instructions for AI Contributors
-
-Before implementing a feature:
-
-* Understand the current roadmap stage.
-* Read relevant ADRs.
-* Prefer simple solutions.
-* Prefer local-first solutions.
-* Prefer privacy-preserving solutions.
-* Explain trade-offs when introducing complexity.
-
-When uncertain, choose the simplest solution that satisfies the requirement.
+Optimise for clarity and learning rather than future flexibility.
 

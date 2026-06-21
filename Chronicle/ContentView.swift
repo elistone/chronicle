@@ -14,13 +14,17 @@ struct ContentView: View {
     @State private var appIcon: NSImage? = nil
 
     var body: some View {
-        HStack(alignment: .top, spacing: 24) {
-            activeAppPanel
+        VStack(spacing: 24) {
+            HStack(alignment: .top, spacing: 24) {
+                activeAppPanel
+                Divider()
+                IdleDetectorView()
+            }
             Divider()
-            IdleDetectorView()
+            WindowTitleDetectorView()
         }
         .padding(32)
-        .frame(minWidth: 560, minHeight: 220)
+        .frame(minWidth: 560, minHeight: 400)
         .onAppear(perform: refresh)
         .onReceive(
             NotificationCenter.Publisher(
